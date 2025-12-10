@@ -34,10 +34,13 @@ section{position:relative;width:100%;min-height:100vh;display:flex;align-items:c
 .bm-active{background:linear-gradient(180deg,var(--accent),#4e3528);color:#fff}
 
 /* ---------- SECTIONS & FADE-IN ---------- */
-.card{background:#fff;border-radius:12px;padding:22px;max-width:760px;width:100%;box-shadow:0 6px 30px rgba(0,0,0,0.06)}
-.section-title{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px}
+.card{background:#fff;border-radius:12px;padding:22px;max-width:760px;width:100%;box-shadow:0 6px 30px rgba(0,0,0,0.06);text-align:center;}
+.section-title{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:12px;color:var(--accent);letter-spacing:0.5px;}
 .fade{opacity:0;transform:translateY(18px);transition:all .6s ease}
 .fade.inview{opacity:1;transform:translateY(0)}
+.card p, .card h4, .card .small-muted {font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#555;}
+.card h4 {font-size:20px;margin:8px 0;}
+.card .small-muted {font-size:13px;color:var(--muted);}
 
 /* ---------- GALLERY & LIGHTBOX ---------- */
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
@@ -90,6 +93,13 @@ button.btn-submit{background:var(--accent);color:#fff;padding:10px;border-radius
 #hadiah .bank-item strong{display:block;margin-bottom:6px;color:var(--accent);font-family:'Playfair Display', serif;}
 #hadiah .bank-item em{font-style:normal;font-weight:600;}
 #hadiah .small-muted{margin-top:10px;display:block;text-align:center;color:var(--muted);font-size:13px;}
+
+/* ---------- MEMPELAI GRID ---------- */
+.mempelai-grid{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-top:12px;}
+.mempelai-item{display:flex;flex-direction:column;align-items:center;max-width:180px;text-align:center;}
+.mempelai-item img{width:120px;height:120px;object-fit:cover;border-radius:50%;border:3px solid var(--accent);}
+.mempelai-item h4{font-family:'Playfair Display',serif;margin:12px 0 4px;font-size:20px;color:var(--accent);}
+.mempelai-item p{font-size:14px;color:#555;margin:0;}
 
 /* ---------- Responsive tweaks ---------- */
 @media (max-width:780px){

@@ -1,0 +1,150 @@
+/* === GLOBAL === */
+body,html{
+    margin:0;
+    padding:0;
+    height:100%;
+    overflow:hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+#split-wrapper{
+    display:flex;
+    height:100vh;
+    width:100%;
+}
+
+/* === PANEL KIRI === */
+#left-panel{
+    width:45%;
+    position:relative;
+    overflow:hidden;
+    background:#000;
+}
+
+.left-bg img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:brightness(0.7);
+}
+
+/* TITLE */
+.left-title{
+    position:absolute;
+    bottom:8%;
+    left:8%;
+    color:#fff;
+    animation: fadeInUp 1.6s ease;
+}
+
+.left-title .big{
+    font-size:48px;
+    letter-spacing:2px;
+}
+
+/* LEAF ANIMASI */
+.leaf-floating{
+    position:absolute;
+    opacity:0.8;
+    animation: leafFloat 20s infinite linear;
+}
+
+@keyframes leafFloat{
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(300px) rotate(160deg); }
+}
+
+/* SALJU */
+#snow-left{
+    pointer-events:none;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-image:url('img/snow.png');
+    animation:snow 12s linear infinite;
+    opacity:0.6;
+}
+
+@keyframes snow{
+    0%{ background-position:0 0; }
+    100%{ background-position:0 800px; }
+}
+
+/* === PANEL KANAN === */
+#right-panel{
+    width:55%;
+    height:100vh;
+    overflow-y:auto;
+    position:relative;
+    background:#f8f4ee;
+    scroll-behavior:smooth;
+}
+
+/* NATURE RIGHT */
+.nature-right img{
+    position:absolute;
+    opacity:0.7;
+}
+
+/* Bird animation */
+[data-bird]{
+    width:160px;
+    top:20%;
+    left:-200px;
+    animation: birdFly 18s linear infinite;
+}
+
+@keyframes birdFly{
+    0% { transform: translateX(0); }
+    100% { transform: translateX(150vw); }
+}
+
+/* === SECTION === */
+.section{
+    padding:80px 45px;
+}
+
+.big{
+    font-size:42px;
+}
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:15px;
+}
+
+.gallery-grid img{
+    width:100%;
+    border-radius:10px;
+}
+
+.fade{
+    opacity:0;
+    transform:translateY(30px);
+    transition:0.8s ease-out;
+}
+
+.fade.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* === RESPONSIVE === */
+@media(max-width:900px){
+    #split-wrapper{
+        flex-direction:column;
+    }
+
+    #left-panel{
+        width:100%;
+        height:45vh;
+    }
+
+    #right-panel{
+        width:100%;
+        height:55vh;
+    }
+}

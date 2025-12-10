@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Wedding Invitation - Justin & Sisca</title>
+<title>Wedding Invitation - Ahmad & Siti</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -11,12 +11,14 @@
 
 <!-- COVER -->
 <div id="cover">
-  <div class="cover-bg"><img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1200&q=60" alt="bg"></div>
+  <div class="cover-bg">
+    <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1200&q=60" alt="bg">
+  </div>
   <div class="cover-content">
     <p class="small-muted">Happy Wedding</p>
-    <h2 class="title">Justin & Sisca</h2>
+    <h2 class="title">Ahmad & Siti</h2>
     <p class="small-muted">Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara kami.</p>
-    <p style="margin:10px 0">Kepada: <strong id="kpdName">Bapak Budi</strong></p>
+    <p>Kepada: <strong id="kpdName">Bapak Budi</strong></p>
     <button class="open-btn" id="openInvite">📩 Buka Undangan</button>
   </div>
 </div>
@@ -37,41 +39,39 @@
 </div>
 
 <!-- PAGE -->
-<div id="page" style="display:none;">
+<div id="page">
 
   <!-- HERO -->
   <section id="hero" class="hero">
     <div class="parallax">
-      <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=60" class="layer-a" style="transform:translateY(0)">
-      <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=60" class="layer-b" style="transform:translateY(0)">
+      <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=60" class="layer-a">
+      <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=60" class="layer-b">
     </div>
     <div class="inner">
       <small class="small-muted">The Wedding Of</small>
-      <h1>Justin & Sisca</h1>
+      <h1>Ahmad & Siti</h1>
       <p class="small-muted">Sabtu, 20 Desember 2025 • 10.00 WIB</p>
     </div>
   </section>
 
- <!-- MEMPELAI -->
-<section id="mempelai">
-  <div class="card fade">
-    <h3 class="section-title">Mempelai</h3>
-    <div class="mempelai-grid" style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-top:12px;">
-      <!-- Mempelai Pria -->
-      <div class="mempelai-item" style="text-align:center;flex:1 1 200px;">
-        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Mempelai Pria" style="width:160px;height:160px;object-fit:cover;border-radius:50%;box-shadow:0 6px 20px rgba(0,0,0,0.1);">
-        <h4 style="margin:12px 0 4px;font-family:'Playfair Display',serif;">Ahmad Fauzi</h4>
-        <p style="margin:0;color:#555;font-size:14px;">Putra dari Bapak H. Zulkifli & Ibu Siti Aminah</p>
-      </div>
-      <!-- Mempelai Wanita -->
-      <div class="mempelai-item" style="text-align:center;flex:1 1 200px;">
-        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Mempelai Wanita" style="width:160px;height:160px;object-fit:cover;border-radius:50%;box-shadow:0 6px 20px rgba(0,0,0,0.1);">
-        <h4 style="margin:12px 0 4px;font-family:'Playfair Display',serif;">Siti Rahma</h4>
-        <p style="margin:0;color:#555;font-size:14px;">Putri dari Bapak H. Agus Santoso & Ibu Nur Aisyah</p>
+  <!-- MEMPELAI -->
+  <section id="mempelai">
+    <div class="card fade">
+      <h3 class="section-title">Mempelai</h3>
+      <div class="mempelai-grid">
+        <div class="mempelai-item">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Mempelai Pria">
+          <h4>Ahmad Fauzi</h4>
+          <p>Putra dari Bapak H. Zulkifli & Ibu Siti Aminah</p>
+        </div>
+        <div class="mempelai-item">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Mempelai Wanita">
+          <h4>Siti Rahma</h4>
+          <p>Putri dari Bapak H. Agus Santoso & Ibu Nur Aisyah</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- ACARA -->
   <section id="acara">
@@ -153,12 +153,12 @@
       <div class="bank-info">
         <div class="bank-item">
           <strong>Bank BCA</strong><br>
-          A/N: <em>Justin & Sisca</em><br>
+          A/N: <em>Ahmad & Siti</em><br>
           No. Rek: 123-456-7890
         </div>
         <div class="bank-item">
           <strong>Bank Mandiri</strong><br>
-          A/N: <em>Justin & Sisca</em><br>
+          A/N: <em>Ahmad & Siti</em><br>
           No. Rek: 098-765-4321
         </div>
       </div>
