@@ -112,36 +112,3 @@ button.btn-submit{background:var(--accent);color:#fff;padding:10px;border-radius
 @media (max-width:600px){
   #hadiah .bank-info{flex-direction:column;}
 }
-/* ---------- COUNTDOWN ---------- */
-/* ================= COUNTDOWN ================= */
-.countdown{
-  display:flex;
-  justify-content:center;
-  gap:14px;
-  margin-top:20px;
-  flex-wrap:wrap;
-}
-
-.cd-box{
-  min-width:72px;
-  padding:12px 14px;
-  border-radius:12px;
-  background:rgba(255,255,255,0.85);
-  backdrop-filter:blur(6px);
-  box-shadow:0 6px 20px rgba(0,0,0,.12);
-  text-align:center;
-}
-
-.cd-box span{
-  display:block;
-  font-family:'Playfair Display',serif;
-  font-size:26px;
-  color:var(--accent);
-  line-height:1;
-}
-
-.cd-box small{
-  font-size:12px;
-  color:var(--muted);
-  letter-spacing:.5px;
-}
