@@ -8,24 +8,85 @@
 body,html{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;height:100%;color:#222;background:#f6f4f3;scroll-behavior:smooth}
 
 /* ---------- COVER ---------- */
-#cover{position:fixed;inset:0;display:flex;justify-content:center;align-items:center;background:#fff;z-index:9999;transition:opacity .6s ease;}
+/* #cover{position:fixed;inset:0;display:flex;justify-content:center;align-items:center;background:#fff;z-index:9999;transition:opacity .6s ease;} */
+#cover{
+  position:fixed;
+  inset:0;
+  background:#fff;
+  z-index:9999;
+  overflow:hidden;
+}
 .cover-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.95;z-index:-2}
-.cover-content{background:var(--glass);backdrop-filter:blur(6px);padding:36px 22px;border-radius:16px;text-align:center;width:92%;max-width:380px;box-shadow:0 12px 40px rgba(0,0,0,0.12)}
+.cover-content{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,0.65),
+    rgba(0,0,0,0.25),
+    rgba(0,0,0,0)
+  );
+
+  backdrop-filter:blur(6px);
+  padding:32px 20px 40px;
+
+  text-align:center;
+  color:#fff;
+
+  border-radius:0;
+  box-shadow:none;
+}
 .cover-content p{margin:0 0 8px}
 .cover-content .title{font-family:'Playfair Display',serif;font-size:30px;margin:6px 0}
-.open-btn{background:var(--accent);color:#fff;border:0;padding:10px 22px;border-radius:10px;font-size:15px;cursor:pointer}
+.cover-content .small-muted{
+  color:rgba(255,255,255,0.85);
+}
+.cover-content .open-btn{background:var(--accent);color:#fff;border:0;padding:10px 22px;border-radius:10px;font-size:15px;cursor:pointer}
 
 /* ---------- PAGE & HERO PARALLAX ---------- */
-#page{display:none}
-section{position:relative;width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 18px}
+#page{display:none;}
+section{position:relative;width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px 10px}
 .hero{overflow:hidden}
 .parallax{position:absolute;inset:0;pointer-events:none}
 .parallax img{position:absolute;width:120%;max-width:none;transform:translate3d(0,0,0);}
-.layer-a{left:-10%;top:-10%;opacity:.95}
+.layer-a{left:-10%;top:-20%;opacity:.65}
 .layer-b{right:-10%;bottom:-10%;opacity:.95}
 .hero .inner{position:relative;z-index:2;text-align:center}
 .hero small{display:block;color:var(--muted);letter-spacing:1px}
 .hero h1{font-family:'Playfair Display',serif;font-size:44px;margin:6px 0}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.45),
+    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.45)
+  );
+  z-index:1;
+}
+
+.hero .inner{
+  color:#fff;
+}
+
+.hero h1{
+  text-shadow:0 4px 18px rgba(0,0,0,.45);
+}
+
+.hero .small-muted{
+  color:rgba(255,255,255,.85);
+}
+section:not(.hero) {
+  min-height: auto; /* tidak setinggi layar */
+  display: block;   /* default block layout */
+  padding: 60px 18px; /* jarak vertikal antar section */
+  text-align: center;
+}
 
 /* ---------- FLOATING BOTTOM MENU ---------- */
 .bottom-menu{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#fff;padding:10px 14px;border-radius:16px;display:flex;gap:12px;align-items:center;box-shadow:0 8px 30px rgba(0,0,0,0.12);z-index:999}
@@ -38,9 +99,35 @@ section{position:relative;width:100%;min-height:100vh;display:flex;align-items:c
 .section-title{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:12px;color:var(--accent);letter-spacing:0.5px;}
 .fade{opacity:0;transform:translateY(18px);transition:all .6s ease}
 .fade.inview{opacity:1;transform:translateY(0)}
-.card p, .card h4, .card .small-muted {font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#555;}
+.card p, .card h4, .card .small-muted {font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#222;}
 .card h4 {font-size:20px;margin:8px 0;}
 .card .small-muted {font-size:13px;color:var(--muted);}
+
+/* ---------- AYAT ---------- */
+#ayat{
+  min-height:auto;
+  padding:60px 18px;
+  padding-bottom:60px;
+}
+
+.ayat-card{
+  max-width:720px;
+}
+
+.ayat-text{
+  font-family:'Playfair Display';
+  font-size:15px;
+  line-height:1.7;
+  color:#4e3528;
+  margin:0 0 12px;
+}
+
+.ayat-source{
+  display:block;
+  font-size:14px;
+  color:var(--muted);
+  letter-spacing:.5px;
+}
 
 /* ---------- GALLERY & LIGHTBOX ---------- */
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
@@ -95,11 +182,273 @@ button.btn-submit{background:var(--accent);color:#fff;padding:10px;border-radius
 #hadiah .small-muted{margin-top:10px;display:block;text-align:center;color:var(--muted);font-size:13px;}
 
 /* ---------- MEMPELAI GRID ---------- */
-.mempelai-grid{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-top:12px;}
-.mempelai-item{display:flex;flex-direction:column;align-items:center;max-width:180px;text-align:center;}
+#mempelai {
+  padding-top:0;
+  padding-bottom:60px;
+}
+.mempelai-grid{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-top:10px;}
+.mempelai-item{display:flex;flex-direction:column;align-items:center;max-width:100%;text-align:center;}
 .mempelai-item img{width:120px;height:120px;object-fit:cover;border-radius:50%;border:3px solid var(--accent);}
 .mempelai-item h4{font-family:'Playfair Display',serif;margin:12px 0 4px;font-size:20px;color:var(--accent);}
-.mempelai-item p{font-size:14px;color:#555;margin:0;}
+.mempelai-item p {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+  line-height: 1.6;
+  width: 100%;
+  text-align: center;/* ================= ROOT ================= */
+  :root{
+    --accent:#6b4b3a;
+    --muted:#6b6b6b;
+    --glass:rgba(255,255,255,.55);
+  }
+  
+  *,
+  *::before,
+  *::after{
+    box-sizing:border-box;
+  }
+  
+  html,body{
+    margin:0;
+    padding:0;
+    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    color:#222;
+    background:#f6f4f3;
+    scroll-behavior:smooth;
+  }
+  
+  /* ================= GLOBAL LAYOUT ================= */
+  section{
+    width:100%;
+    padding:80px 18px;
+    position:relative;
+  }
+  
+  .container{
+    max-width:1100px;
+    margin:0 auto;
+    width:100%;
+  }
+  
+  /* ================= HERO ================= */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+      to bottom,
+      rgba(0,0,0,.45),
+      rgba(0,0,0,.25),
+      rgba(0,0,0,.45)
+    );
+    z-index:1;
+  }
+  
+  .hero .inner{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    color:#fff;
+  }
+  
+  .hero h1{
+    font-family:'Playfair Display',serif;
+    font-size:44px;
+    margin:6px 0;
+    text-shadow:0 4px 18px rgba(0,0,0,.45);
+  }
+  
+  .hero small{
+    display:block;
+    letter-spacing:1px;
+    color:rgba(255,255,255,.85);
+  }
+  
+  /* ================= CARD ================= */
+  .card{
+    background:#fff;
+    border-radius:16px;
+    padding:32px 22px;
+    box-shadow:0 8px 30px rgba(0,0,0,.08);
+    max-width:760px;
+    margin:0 auto;
+    text-align:center;
+  }
+  
+  .section-title{
+    font-family:'Playfair Display',serif;
+    font-size:28px;
+    color:var(--accent);
+    margin-bottom:16px;
+  }
+  
+  /* ================= AYAT ================= */
+  #ayat{
+    padding:60px 18px;
+  }
+  
+  .ayat-card{
+    max-width:720px;
+  }
+  
+  .ayat-text{
+    font-family:'Playfair Display',serif;
+    font-size:15px;
+    line-height:1.7;
+    color:#4e3528;
+  }
+  
+  .ayat-source{
+    display:block;
+    margin-top:10px;
+    font-size:14px;
+    color:var(--muted);
+  }
+  
+  /* ================= MEMPELAI ================= */
+  #mempelai{
+    padding-bottom:60px;
+  }
+  
+  .mempelai-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:48px;
+    margin-top:32px;
+  }
+  
+  .mempelai-item{
+    text-align:center;
+  }
+  
+  .mempelai-item img{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:50%;
+    border:3px solid var(--accent);
+  }
+  
+  .mempelai-item h4{
+    font-family:'Playfair Display',serif;
+    margin:14px 0 6px;
+    font-size:20px;
+    color:var(--accent);
+  }
+  
+  .mempelai-item p{
+    font-size:14px;
+    line-height:1.6;
+    color:#555;
+    margin:0;
+  }
+  
+  /* ================= COUNTDOWN ================= */
+  .countdown{
+    display:flex;
+    gap:10px;
+    max-width:360px;
+    margin:24px auto 0;
+  }
+  
+  .cd-box{
+    flex:1;
+    background:rgba(255,255,255,.85);
+    border-radius:14px;
+    padding:12px 6px;
+    box-shadow:0 6px 20px rgba(0,0,0,.12);
+  }
+  
+  .cd-box span{
+    font-family:'Playfair Display',serif;
+    font-size:22px;
+    color:var(--accent);
+  }
+  
+  .cd-box small{
+    font-size:12px;
+    color:var(--muted);
+  }
+  
+  /* ================= MAP ================= */
+  .mapouter{
+    width:100%;
+    max-width:720px;
+    margin:24px auto 0;
+    position:relative;
+    padding-bottom:75%;
+  }
+  
+  .gmap_canvas{
+    position:absolute;
+    inset:0;
+  }
+  
+  #gmap_canvas{
+    width:100%;
+    height:100%;
+    border:0;
+  }
+  
+  /* ================= BOTTOM MENU ================= */
+  .bottom-menu{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    background:#fff;
+    padding:10px 14px;
+    border-radius:18px;
+    display:flex;
+    gap:12px;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
+    z-index:999;
+  }
+  
+  /* ================= ANIMATION ================= */
+  .fade{
+    opacity:0;
+    transform:translateY(18px);
+    transition:.6s ease;
+  }
+  
+  .fade.inview{
+    opacity:1;
+    transform:none;
+  }
+  
+  /* ================= RESPONSIVE ================= */
+  @media (max-width:768px){
+    
+    .hero h1{font-size:34px}
+  
+    .mempelai-grid{
+      grid-template-columns:1fr;
+      gap:32px;
+    }
+  
+    section{
+      padding:60px 16px;
+    }
+  }
+  
+  text-wrap: wrap;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  font-weight: bold;
+}
 
 /* ---------- Responsive tweaks ---------- */
 @media (max-width:780px){
@@ -116,26 +465,38 @@ button.btn-submit{background:var(--accent);color:#fff;padding:10px;border-radius
 /* ================= COUNTDOWN ================= */
 .countdown{
   display:flex;
-  justify-content:center;
-  gap:14px;
-  margin-top:20px;
-  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+
+  margin-top:18px;
+  width:100%;
+  max-width:360px;
+  margin-left:auto;
+  margin-right:auto;
+
+  flex-wrap:nowrap;
 }
 
+
 .cd-box{
-  min-width:72px;
-  padding:12px 14px;
+  flex:1;
+  min-width:0;
+
+  padding:10px 6px;
   border-radius:12px;
+
   background:rgba(255,255,255,0.85);
   backdrop-filter:blur(6px);
   box-shadow:0 6px 20px rgba(0,0,0,.12);
+
   text-align:center;
 }
 
 .cd-box span{
   display:block;
   font-family:'Playfair Display',serif;
-  font-size:26px;
+  font-size:23px;
   color:var(--accent);
   line-height:1;
 }
@@ -144,4 +505,82 @@ button.btn-submit{background:var(--accent);color:#fff;padding:10px;border-radius
   font-size:12px;
   color:var(--muted);
   letter-spacing:.5px;
+}
+.mapouter {
+  position: relative;
+  text-align: right;
+  width: 100%;
+  max-width: 720px;
+  height: 0;
+  padding-bottom: 75%; /* proporsional tinggi iframe */
+  margin: 0 auto;
+}
+
+.gmap_canvas {
+  overflow: hidden;
+  background: none !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+iframe#gmap_canvas {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+/* =============================
+   GLOBAL CENTER FIX (FINAL)
+============================= */
+
+.content-center{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* Semua section NON-HERO */
+.content-center section{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding:60px 18px;
+}
+
+/* Card benar-benar center */
+.content-center .card{
+  width:100%;
+  max-width:760px;
+  margin:0 auto;
+}
+
+/* MAP RESPONSIVE (aman PC / tablet) */
+.mapouter{
+  width:100%;
+  max-width:760px;
+  margin:0 auto;
+  position:relative;
+  padding-bottom:56%;
+  height:0;
+}
+
+.gmap_canvas,
+#gmap_canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+/* MEMPELAI – nama orang tua TIDAK DIPAKSA 1 BARIS */
+.mempelai-item p{
+  white-space:normal;
+  overflow:visible;
+  text-overflow:unset;
+  font-weight:500;
 }

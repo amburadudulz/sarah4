@@ -39,19 +39,19 @@
 
 <!-- ================= AUDIO ================= -->
 <audio id="bgmusic" loop preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2025/05/22/audio_6790595d16.mp3?filename=wedding-wedding-music-345462.mp3" type="audio/mpeg">
+  <source src="index_files/lagu.mp3" type="audio/mpeg">
 </audio>
 
 <!-- ================= BACKGROUND DECOR ================= -->
 <div class="bg-animated-nature">
-  <img src="https://indoinvite.com/nikah/template/elegan-nature/tree-1.webp" class="animate-leaf" style="top:20%; left:30%; width:140%;">
-  <img src="https://indoinvite.com/nikah/template/elegan-nature/tree-2.webp" class="animate-leaf" style="bottom:5%; right:10%; width:150%;">
-  <img src="https://indoinvite.com/nikah/template/elegan-nature/bird.webp" data-anim="bird-move" style="top:25%; left:40%; width:180px;">
+  <img src="index_files/tree-1.webp" class="animate-leaf" style="top:20%; left:30%; width:140%;">
+  <img src="index_files/tree-2.webp" class="animate-leaf" style="bottom:5%; right:10%; width:150%;">
+  <img src="index_files/bird.webp" data-anim="bird-move" style="top:25%; left:40%; width:180px;">
 </div>
 
 <!-- ================= PAGE ================= -->
 <div id="page">
-
+<div class="content-center">
   <!-- HERO -->
   <section id="hero" class="hero">
     <div class="parallax">
@@ -61,7 +61,7 @@
     <div class="inner">
       <small class="small-muted">The Wedding Of</small>
       <h1>Maisaroh & Aditya</h1>
-      <p class="small-muted">Minggu, 11 Januari 2026 • 08.00 WITA</p>
+      <p class="small-muted">Minggu, 11 Januari 2026</p>
 
       <!-- COUNTDOWN -->
       <div class="countdown" data-date="2026-01-11 08:00">
@@ -83,9 +83,21 @@
   </div>
 </div>
 
-      <p class="akad-info">Akad Nikah • Minggu, 11 Januari 2026 • 08.00 WITA</p>
     </div>
   </section>
+<!-- AYAT AL-QURAN -->
+<section id="ayat">
+  <div class="card fade ayat-card">
+    <p class="ayat-text">
+      “Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan
+      untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya,
+      dan Dia menjadikan di antaramu rasa kasih dan sayang.
+      Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda
+      bagi kaum yang berpikir.”
+    </p>
+    <span class="ayat-source">QS. Ar-Rum : 21</span>
+  </div>
+</section>
 
   <!-- MEMPELAI -->
   <section id="mempelai">
@@ -95,12 +107,18 @@
         <div class="mempelai-item">
           <img src="foto/pria.jpeg" alt="Mempelai Pria">
           <h4>Aditya Hermawan</h4>
-          <p>Putra Ketiga dari<br>Bapak Bambang Purwo Sutrisno & Ibu Heri Ningsih</p>
+          <p>Putra Ketiga dari<br>
+          Bapak Bambang Purwo Sutrisno<br>
+          dan<br>
+          Ibu Heri Ningsih</p>
         </div>
         <div class="mempelai-item">
           <img src="foto/wanita.jpeg" alt="Mempelai Wanita">
           <h4>Maisaroh, S.E</h4>
-          <p>Putri Kedua dari<br>Bapak H. Jarliani & Ibu Hj. Syaripah</p>
+          <p>Putri Kedua dari<br>
+          Bapak H. Jarliani<br>
+          dan<br>
+          Ibu Hj. Syaripah<br></p>
         </div>
       </div>
     </div>
@@ -115,7 +133,20 @@
       <p>Jl. Patimura, RT.003<br>Samarinda Seberang<br>(Samping ATM Mandiri Patimura)</p>
     </div>
   </section>
-
+  <!-- MAP -->
+  <section id="map">
+  <div class="card fade">
+    <h3 class="section-title">Lokasi Acara</h3>
+    <div class="mapouter">
+      <div class="gmap_canvas">
+      <iframe id="gmap_canvas"
+          src="https://maps.google.com/maps?q=pattimura+samarinda&t=&z=13&ie=UTF8&iwloc=&output=embed"
+          frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
   <!-- GALLERY -->
   <section id="gallery">
     <div class="card fade">
@@ -169,7 +200,7 @@
       <div class="rsvp-list" id="rsvpList"></div>
     </div>
   </section>
-
+</div>
 </div>
 
 <!-- LIGHTBOX -->

@@ -4,7 +4,7 @@ const $$ = s => document.querySelectorAll(s);
 
 // ---------- Smooth continuous autoscroll ----------
 let _autoRaf = null;
-let _autoSpeed = 0.6;
+let _autoSpeed = 0.4;
 let _autoScrollActive = false;
 
 function startAutoScroll(){
