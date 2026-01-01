@@ -584,3 +584,21 @@ iframe#gmap_canvas {
   text-overflow:unset;
   font-weight:500;
 }
+
+.rsvp-item {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.rsvp-item.animate-in {
+  animation: rsvpFadeIn 0.5s ease forwards;
+}
+
+@keyframes rsvpFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

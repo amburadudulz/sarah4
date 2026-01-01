@@ -5,10 +5,28 @@
 // Countdown: 11 Januari 2026 08:00 WITA
 // ===============================
 ?>
+<?php
+$rsvpFile = __DIR__ . '/rsvp-data.json';
+$rsvps = [];
+
+if (file_exists($rsvpFile)) {
+  $json = file_get_contents($rsvpFile);
+  $rsvps = json_decode($json, true) ?: [];
+}
+/**
+ * TAMPILKAN DATA TERBARU DI ATAS
+ * BATASI MAKSIMAL 20 DATA
+ */
+$rsvps = array_slice(array_reverse($rsvps), 0, 10);
+?>
 <!DOCTYPE html>
+
+
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8" />
+<link rel="icon" type="image/x-icon" href="/index_files/wedding-ring.png">
+<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Undangan Pernikahan | Maisaroh & Aditya</title>
 
@@ -140,9 +158,13 @@
     <div class="mapouter">
       <div class="gmap_canvas">
       <iframe id="gmap_canvas"
-          src="https://maps.google.com/maps?q=pattimura+samarinda&t=&z=13&ie=UTF8&iwloc=&output=embed"
-          frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
-        </iframe>
+  src="https://maps.google.com/maps?q=-0.516774,117.145161&t=&z=18&ie=UTF8&iwloc=&output=embed"
+  frameborder="0"
+  scrolling="no"
+  marginheight="0"
+  marginwidth="0">
+</iframe>
+
       </div>
     </div>
   </div>
@@ -168,15 +190,11 @@
       <h3 class="section-title">Hadiah / Kado</h3>
       <p>Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Namun apabila berkenan memberikan tanda kasih, dapat melalui:</p>
       <div class="bank-info">
-        <div class="bank-item">
-          <strong>Bank BCA</strong>
-          A/N: <em>Maisaroh</em><br>
-          No. Rek: 1234567890
-        </div>
+        
         <div class="bank-item">
           <strong>Bank Mandiri</strong>
           A/N: <em>Aditya Hermawan</em><br>
-          No. Rek: 0987654321
+          No. Rek: 1480017700124
         </div>
       </div>
       <span class="small-muted">Terima kasih atas doa dan kebaikan hati Anda.</span>
@@ -188,16 +206,29 @@
     <div class="card fade">
       <h3 class="section-title">Konfirmasi Kehadiran</h3>
       <form id="rsvpForm" class="rsvp">
-        <input id="r_name" type="text" placeholder="Nama" required>
-        <input id="r_phone" type="text" placeholder="No. HP (opsional)">
-        <select id="r_attend">
-          <option value="Hadir">Hadir</option>
-          <option value="Tidak Hadir">Tidak Hadir</option>
-        </select>
-        <textarea id="r_message" rows="3" placeholder="Pesan / Doa"></textarea>
-        <button class="btn-submit" type="submit">Kirim</button>
-      </form>
-      <div class="rsvp-list" id="rsvpList"></div>
+  <input id="r_name" type="text" placeholder="Nama" required>
+  <input id="r_phone" type="text" placeholder="No. HP (opsional)">
+  <select id="r_attend">
+    <option value="Hadir">Hadir</option>
+    <option value="Tidak Hadir">Tidak Hadir</option>
+  </select>
+  <textarea id="r_message" rows="3" placeholder="Pesan / Doa"></textarea>
+  <button class="btn-submit" type="submit">Kirim</button>
+</form>
+      <div class="rsvp-list">
+<?php if (!empty($rsvps)): ?>
+  <?php foreach (array_reverse($rsvps) as $r): ?>
+    <div style="padding:8px;border-bottom:1px solid #eee">
+      <b><?= $r['name'] ?></b> — <?= $r['attend'] ?>
+      <?php if (!empty($r['message'])): ?>
+        <div class="small-muted"><?= $r['message'] ?></div>
+      <?php endif; ?>
+    </div>
+  <?php endforeach; ?>
+<?php else: ?>
+  <div class="small-muted">Belum ada konfirmasi.</div>
+<?php endif; ?>
+</div>
     </div>
   </section>
 </div>
@@ -215,7 +246,7 @@
   <div class="bm-item" data-to="#mempelai"><i>👥</i></div>
   <div class="bm-item" data-to="#acara"><i>📅</i></div>
   <div class="bm-item" data-to="#gallery"><i>🖼️</i></div>
-  <div class="bm-item" id="autoScrollToggle"><i id="autoI">⤓</i></div>
+  <!-- <div class="bm-item" id="autoScrollToggle"><i id="autoI">⤓</i></div> -->
   <div class="bm-item" id="musicToggle"><i id="musicI">♪</i></div>
 </div>
 

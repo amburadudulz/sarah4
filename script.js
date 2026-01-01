@@ -2,49 +2,59 @@
 const $  = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 
-// ---------- Smooth continuous autoscroll ----------
-let _autoRaf = null;
-let _autoSpeed = 0.4;
-let _autoScrollActive = false;
+// ===================================================
+// AUTOSCROLL (ENGINE & UI TERPISAH)
+// ===================================================
+let autoScrollTimer = null;
+let autoScrollRunning = false;
+const AUTO_SCROLL_SPEED = 0.5;
 
 function startAutoScroll(){
-  if(_autoRaf) return;
-  _autoScrollActive = true;
+  if (autoScrollRunning) return;
 
-  function step(){
+  autoScrollRunning = true;
+  autoScrollTimer = setInterval(() => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
-    if(window.scrollY >= max - 1){
-      stopAutoScroll();
+
+    if (max <= 0 || window.scrollY >= max - 1){
+      stopAutoScroll(false);
       return;
     }
-    window.scrollBy(0, _autoSpeed);
-    _autoRaf = requestAnimationFrame(step);
+
+    window.scrollBy(0, AUTO_SCROLL_SPEED);
+  }, 16);
+}
+
+function stopAutoScroll(resetUI = false){
+  if (autoScrollTimer){
+    clearInterval(autoScrollTimer);
+    autoScrollTimer = null;
   }
-  _autoRaf = requestAnimationFrame(step);
-}
+  autoScrollRunning = false;
 
-function stopAutoScroll(){
-  if(_autoRaf){
-    cancelAnimationFrame(_autoRaf);
-    _autoRaf = null;
+  if (resetUI){
+    const autoBtn = $('#autoScrollToggle');
+    const autoI   = $('#autoI');
+    if (autoBtn && autoI){
+      autoBtn.classList.remove('bm-active');
+      autoI.textContent = '⤓';
+    }
   }
-  _autoScrollActive = false;
 }
 
-// Stop autoscroll on user interaction
-function attachStopOnUser(){
-  const stopOnUser = () => {
-    if(_autoScrollActive) stopAutoScroll();
-  };
-  ['wheel','mousedown','touchstart'].forEach(evt =>
-    window.addEventListener(evt, stopOnUser, { passive:true })
-  );
-}
+// stop autoscroll on user interaction (engine only)
+['wheel','touchstart','mousedown'].forEach(evt => {
+  window.addEventListener(evt, () => {
+    if (autoScrollRunning){
+      stopAutoScroll(false);
+    }
+  }, { passive:true });
+});
 
-// ---------- DOMContentLoaded ----------
+// ===================================================
+// DOM READY
+// ===================================================
 document.addEventListener('DOMContentLoaded', ()=>{
-
-  attachStopOnUser();
 
   const cover   = $('#cover');
   const page    = $('#page');
@@ -53,18 +63,25 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   /* ---------- OPEN INVITATION ---------- */
   openBtn?.addEventListener('click', ()=>{
-    if(cover) cover.style.opacity = '0';
+    if (cover) cover.style.opacity = '0';
 
     setTimeout(()=>{
-      if(cover) cover.style.display = 'none';
-      if(page) page.style.display = 'block';
-      if(bgmusic) bgmusic.play().catch(()=>{});
+      if (cover) cover.style.display = 'none';
+      if (page) page.style.display = 'block';
+      if (bgmusic) bgmusic.play().catch(()=>{});
+
+      const hero = $('#hero');
+      if (hero) hero.scrollIntoView({ behavior:'smooth' });
 
       setTimeout(()=>{
-        const hero = $('#hero');
-        if(hero) hero.scrollIntoView({ behavior:'smooth' });
-        setTimeout(()=> startAutoScroll(), 800);
-      }, 80);
+        startAutoScroll();
+        const autoBtn = $('#autoScrollToggle');
+        const autoI   = $('#autoI');
+        if (autoBtn && autoI){
+          autoBtn.classList.add('bm-active');
+          autoI.textContent = '⏸';
+        }
+      }, 1200);
 
     }, 600);
   });
@@ -74,18 +91,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const sc = window.scrollY;
     const la = $('.layer-a');
     const lb = $('.layer-b');
-    if(la) la.style.transform = `translateY(${sc * 0.14}px)`;
-    if(lb) lb.style.transform = `translateY(${sc * 0.22}px)`;
+    if (la) la.style.transform = `translateY(${sc * 0.14}px)`;
+    if (lb) lb.style.transform = `translateY(${sc * 0.22}px)`;
   });
 
   /* ---------- FADE IN + TIMELINE ---------- */
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting) e.target.classList.add('inview');
-    });
-  }, { threshold:0.15 });
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if (e.isIntersecting) e.target.classList.add('inview');
+      });
+    }, { threshold:0.15 });
 
-  $$('.fade, .timeline-item').forEach(el => io.observe(el));
+    $$('.fade, .timeline-item').forEach(el => io.observe(el));
+  } else {
+    $$('.fade, .timeline-item').forEach(el => el.classList.add('inview'));
+  }
 
   /* ---------- GALLERY LIGHTBOX ---------- */
   const gallery  = $('#galleryInner');
@@ -95,52 +116,47 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   gallery?.addEventListener('click', e=>{
     const img = e.target.closest('img');
-    if(!img) return;
+    if (!img) return;
 
     lbImg.src = img.src;
     lightbox.style.display = 'flex';
 
-    stopAutoScroll();
-    $('#autoScrollToggle')?.classList.remove('bm-active');
-    $('#autoI').textContent = '⤓';
+    stopAutoScroll(false);
   });
 
   lbClose?.addEventListener('click', ()=> lightbox.style.display='none');
   lightbox?.addEventListener('click', e=>{
-    if(e.target === lightbox) lightbox.style.display='none';
+    if (e.target === lightbox) lightbox.style.display='none';
   });
 
   /* ---------- BOTTOM MENU ---------- */
-  const bottomMenu = $('#bottomMenu');
-  bottomMenu?.addEventListener('click', e=>{
+  $('#bottomMenu')?.addEventListener('click', e=>{
     const item = e.target.closest('.bm-item');
-    if(!item) return;
+    if (!item) return;
+
+    stopAutoScroll(false);
 
     const to = item.getAttribute('data-to');
-    if(to){
+    if (to){
       const el = $(to);
-      if(el) el.scrollIntoView({ behavior:'smooth' });
-
-      $$('.bm-item').forEach(b=>b.classList.remove('bm-active'));
-      item.classList.add('bm-active');
+      if (el) el.scrollIntoView({ behavior:'smooth' });
     }
+
+    $$('.bm-item').forEach(b=>b.classList.remove('bm-active'));
+    item.classList.add('bm-active');
   });
 
   /* ---------- AUTO SCROLL TOGGLE ---------- */
-  let autoScroll = false;
   const autoBtn = $('#autoScrollToggle');
   const autoI   = $('#autoI');
 
   autoBtn?.addEventListener('click', ()=>{
-    autoScroll = !autoScroll;
-    if(autoScroll){
-      startAutoScroll();
-      autoI.textContent = '⏸';
-      autoBtn.classList.add('bm-active');
+    if (autoScrollRunning){
+      stopAutoScroll(true);
     } else {
-      stopAutoScroll();
-      autoI.textContent = '⤓';
-      autoBtn.classList.remove('bm-active');
+      startAutoScroll();
+      autoBtn.classList.add('bm-active');
+      autoI.textContent = '⏸';
     }
   });
 
@@ -149,116 +165,102 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const musicI   = $('#musicI');
 
   musicBtn?.addEventListener('click', ()=>{
-    if(!bgmusic) return;
-    if(bgmusic.paused){
+    if (!bgmusic) return;
+    if (bgmusic.paused){
       bgmusic.play().catch(()=>{});
-      musicI.textContent = '♪';
-      musicBtn.classList.add('bm-active');
     } else {
       bgmusic.pause();
-      musicI.textContent = '♫';
-      musicBtn.classList.remove('bm-active');
     }
   });
 
-  /* ---------- RSVP (localStorage + paging) ---------- */
-  const rsvpForm = $('#rsvpForm');
-  const rsvpList = $('#rsvpList');
-  const itemsPerPage = 3;
+  // audio-driven UI (ONLY SOURCE OF TRUTH)
+  bgmusic?.addEventListener('play', ()=>{
+    musicI.textContent = '♪';
+    musicBtn.classList.add('bm-active');
+  });
 
-  function escapeHtml(s){
-    return (s||'').toString()
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;');
-  }
+  bgmusic?.addEventListener('pause', ()=>{
+    musicI.textContent = '♫';
+    musicBtn.classList.remove('bm-active');
+  });
 
-  function loadRsvp(page=1){
-    const data = JSON.parse(localStorage.getItem('rsvps') || '[]');
-    const start = (page-1)*itemsPerPage;
-    const paged = data.slice(start, start+itemsPerPage);
+  /* ---------- RSVP (FILE BASED) ---------- */
+const rsvpForm = $('#rsvpForm');
 
-    rsvpList.innerHTML = paged.map(d=>`
-      <div style="padding:8px;border-bottom:1px solid #eee">
-        <b>${escapeHtml(d.name)}</b> — ${escapeHtml(d.attend)}
-        <div class="small-muted">
-          ${escapeHtml(d.phone||'')} ${escapeHtml(d.message||'')}
-        </div>
-      </div>
-    `).join('');
+rsvpForm?.addEventListener('submit', e=>{
+  e.preventDefault();
 
-    if(data.length > itemsPerPage){
-      let nav = '<div style="text-align:center;margin-top:8px">';
-      const total = Math.ceil(data.length/itemsPerPage);
-      for(let i=1;i<=total;i++){
-        nav += `<button data-page="${i}"
-          style="margin:2px;padding:3px 8px;border-radius:4px;
-          border:1px solid #ccc;
-          background:${i===page?'var(--accent)':'#fff'};
-          color:${i===page?'#fff':'#000'}">${i}</button>`;
-      }
-      nav += '</div>';
-      rsvpList.innerHTML += nav;
+  const name    = $('#r_name').value.trim();
+  const phone   = $('#r_phone').value.trim();
+  const attend  = $('#r_attend').value;
+  const message = $('#r_message').value.trim();
 
-      rsvpList.querySelectorAll('button').forEach(btn=>{
-        btn.onclick = ()=> loadRsvp(+btn.dataset.page);
-      });
+  if (!name) return;
+
+  const fd = new FormData();
+  fd.append('name', name);
+  fd.append('phone', phone);
+  fd.append('attend', attend);
+  fd.append('message', message);
+
+  fetch('save-rsvp.php', {
+    method: 'POST',
+    body: fd
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.status === 'ok'){
+      rsvpForm.reset();
+      loadLatestRsvp(); // ⬅️ langsung tampil
     }
-  }
+  });
+});
+function loadLatestRsvp(){
+  fetch('get-rsvp.php')
+    .then(r => r.json())
+    .then(d => {
+      if (!d || !d.name) return;
 
-  rsvpForm?.addEventListener('submit', e=>{
-    e.preventDefault();
-    const name = $('#r_name').value.trim();
-    if(!name) return alert('Isi nama');
+      const wrap = document.querySelector('.rsvp-list');
+      if (!wrap) return;
 
-    const arr = JSON.parse(localStorage.getItem('rsvps') || '[]');
-    arr.push({
-      name,
-      phone: $('#r_phone').value.trim(),
-      attend: $('#r_attend').value,
-      message: $('#r_message').value.trim(),
-      created: new Date().toISOString()
+      const div = document.createElement('div');
+      div.className = 'rsvp-item animate-in';
+      div.innerHTML = `
+        <b>${d.name}</b> — ${d.attend}
+        ${d.message ? `<div class="small-muted">${d.message}</div>` : ''}
+      `;
+
+      wrap.prepend(div);
     });
-
-    localStorage.setItem('rsvps', JSON.stringify(arr));
-    loadRsvp(Math.ceil(arr.length/itemsPerPage));
-    alert('Terima kasih, konfirmasi Anda tersimpan.');
-    rsvpForm.reset();
-  });
-
-  loadRsvp();
+}
 
   /* ---------- PARAM ?kpd= ---------- */
-  const params = new URLSearchParams(location.search);
-  if(params.get('kpd')){
-    const el = $('#kpdName');
-    if(el) el.textContent = params.get('kpd');
+  const params = new URLSearchParams(window.location.search);
+  const kpdVal = params.get('kpd');
+  if (kpdVal){
+    const kpd = $('#kpdName');
+    if (kpd) kpd.textContent = kpdVal;
   }
 
-  /* ================= COUNTDOWN (FIXED & SAFE) ================= */
+  /* ---------- COUNTDOWN ---------- */
   document.querySelectorAll('.countdown').forEach(cd=>{
-    const raw = cd.dataset.date; // contoh: 2025-12-07 09:00
-    if(!raw) return;
+    const raw = cd.dataset.date;
+    if (!raw) return;
 
-    // Paksa timezone WITA (+08:00)
     const targetTime = new Date(raw.replace(' ', 'T') + '+08:00').getTime();
-
     const dEl = cd.querySelector('.cd-days');
     const hEl = cd.querySelector('.cd-hours');
     const mEl = cd.querySelector('.cd-minutes');
     const sEl = cd.querySelector('.cd-seconds');
 
     function tick(){
-      const now = Date.now();
-      let diff = targetTime - now;
-
-      if(diff <= 0){
-        dEl.textContent =
-        hEl.textContent =
-        mEl.textContent =
-        sEl.textContent = '00';
+      let diff = targetTime - Date.now();
+      if (diff <= 0){
+        dEl.textContent = hEl.textContent =
+        mEl.textContent = sEl.textContent = '00';
         return;
       }
-
       dEl.textContent = Math.floor(diff / 86400000);
       hEl.textContent = String(Math.floor(diff / 3600000 % 24)).padStart(2,'0');
       mEl.textContent = String(Math.floor(diff / 60000 % 60)).padStart(2,'0');
