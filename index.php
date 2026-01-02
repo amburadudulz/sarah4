@@ -199,10 +199,16 @@ if (!empty($_GET['to'])) {
       <div class="bank-info">
         
         <div class="bank-item">
-          <strong>Bank Mandiri</strong>
-          A/N: <em>Aditya Hermawan</em><br>
-          No. Rek: 1480017700124
-        </div>
+  <strong>Bank Mandiri</strong><br>
+  A/N: <em>Aditya Hermawan</em><br>
+
+  <div class="rek-wrap">
+    <span class="rek-number" data-rek="1480017700124">
+      1480017700124
+    </span>
+    <button class="copy-rek" type="button">Salin Nomor Rekening</button>
+  </div>
+</div>
       </div>
       <span class="small-muted">Terima kasih atas doa dan kebaikan hati Anda.</span>
     </div>

@@ -15,12 +15,10 @@ function startAutoScroll(){
   autoScrollRunning = true;
   autoScrollTimer = setInterval(() => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
-
     if (max <= 0 || window.scrollY >= max - 1){
       stopAutoScroll(false);
       return;
     }
-
     window.scrollBy(0, AUTO_SCROLL_SPEED);
   }, 16);
 }
@@ -42,9 +40,9 @@ function stopAutoScroll(resetUI = false){
   }
 }
 
-// stop autoscroll on user interaction (engine only)
-['wheel','touchstart','mousedown'].forEach(evt => {
-  window.addEventListener(evt, () => {
+// stop autoscroll on user interaction
+['wheel','touchstart','mousedown'].forEach(evt=>{
+  window.addEventListener(evt, ()=>{
     if (autoScrollRunning){
       stopAutoScroll(false);
     }
@@ -63,15 +61,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   /* ---------- OPEN INVITATION ---------- */
   openBtn?.addEventListener('click', ()=>{
-    if (cover) cover.style.opacity = '0';
+    cover && (cover.style.opacity = '0');
 
     setTimeout(()=>{
-      if (cover) cover.style.display = 'none';
-      if (page) page.style.display = 'block';
-      if (bgmusic) bgmusic.play().catch(()=>{});
+      cover && (cover.style.display = 'none');
+      page && (page.style.display = 'block');
+      bgmusic && bgmusic.play().catch(()=>{});
 
-      const hero = $('#hero');
-      if (hero) hero.scrollIntoView({ behavior:'smooth' });
+      $('#hero')?.scrollIntoView({ behavior:'smooth' });
 
       setTimeout(()=>{
         startAutoScroll();
@@ -82,30 +79,26 @@ document.addEventListener('DOMContentLoaded', ()=>{
           autoI.textContent = '⏸';
         }
       }, 1200);
-
     }, 600);
   });
 
   /* ---------- PARALLAX HERO ---------- */
   window.addEventListener('scroll', ()=>{
     const sc = window.scrollY;
-    const la = $('.layer-a');
-    const lb = $('.layer-b');
-    if (la) la.style.transform = `translateY(${sc * 0.14}px)`;
-    if (lb) lb.style.transform = `translateY(${sc * 0.22}px)`;
+    $('.layer-a') && ($('.layer-a').style.transform = `translateY(${sc * 0.14}px)`);
+    $('.layer-b') && ($('.layer-b').style.transform = `translateY(${sc * 0.22}px)`);
   });
 
-  /* ---------- FADE IN + TIMELINE ---------- */
+  /* ---------- FADE IN ---------- */
   if ('IntersectionObserver' in window){
     const io = new IntersectionObserver(entries=>{
       entries.forEach(e=>{
         if (e.isIntersecting) e.target.classList.add('inview');
       });
     }, { threshold:0.15 });
-
-    $$('.fade, .timeline-item').forEach(el => io.observe(el));
+    $$('.fade, .timeline-item').forEach(el=>io.observe(el));
   } else {
-    $$('.fade, .timeline-item').forEach(el => el.classList.add('inview'));
+    $$('.fade, .timeline-item').forEach(el=>el.classList.add('inview'));
   }
 
   /* ---------- GALLERY LIGHTBOX ---------- */
@@ -117,10 +110,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   gallery?.addEventListener('click', e=>{
     const img = e.target.closest('img');
     if (!img) return;
-
     lbImg.src = img.src;
     lightbox.style.display = 'flex';
-
     stopAutoScroll(false);
   });
 
@@ -137,10 +128,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     stopAutoScroll(false);
 
     const to = item.getAttribute('data-to');
-    if (to){
-      const el = $(to);
-      if (el) el.scrollIntoView({ behavior:'smooth' });
-    }
+    to && $(to)?.scrollIntoView({ behavior:'smooth' });
 
     $$('.bm-item').forEach(b=>b.classList.remove('bm-active'));
     item.classList.add('bm-active');
@@ -166,14 +154,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   musicBtn?.addEventListener('click', ()=>{
     if (!bgmusic) return;
-    if (bgmusic.paused){
-      bgmusic.play().catch(()=>{});
-    } else {
-      bgmusic.pause();
-    }
+    bgmusic.paused ? bgmusic.play().catch(()=>{}) : bgmusic.pause();
   });
 
-  // audio-driven UI (ONLY SOURCE OF TRUTH)
   bgmusic?.addEventListener('play', ()=>{
     musicI.textContent = '♪';
     musicBtn.classList.add('bm-active');
@@ -184,91 +167,93 @@ document.addEventListener('DOMContentLoaded', ()=>{
     musicBtn.classList.remove('bm-active');
   });
 
-  /* ---------- RSVP (FILE BASED) ---------- */
-const rsvpForm = $('#rsvpForm');
+  /* ---------- RSVP SUBMIT ---------- */
+  const rsvpForm = $('#rsvpForm');
 
-rsvpForm?.addEventListener('submit', e=>{
-  e.preventDefault();
+  rsvpForm?.addEventListener('submit', e=>{
+    e.preventDefault();
 
-  const name    = $('#r_name').value.trim();
-  const phone   = $('#r_phone').value.trim();
-  const attend  = $('#r_attend').value;
-  const message = $('#r_message').value.trim();
+    const fd = new FormData(rsvpForm);
 
-  if (!name) return;
-
-  const fd = new FormData();
-  fd.append('name', name);
-  fd.append('phone', phone);
-  fd.append('attend', attend);
-  fd.append('message', message);
-
-  fetch('save-rsvp.php', {
-    method: 'POST',
-    body: fd
-  })
-  .then(r => r.json())
-  .then(res => {
-    if (res.status === 'ok'){
-      rsvpForm.reset();
-      loadLatestRsvp(); // ⬅️ langsung tampil
-    }
+    fetch('save-rsvp.php', { method:'POST', body:fd })
+      .then(r=>r.json())
+      .then(res=>{
+        if (res.status === 'ok'){
+          rsvpForm.reset();
+          loadLatestRsvp();
+        }
+      });
   });
-});
-function loadLatestRsvp(){
-  fetch('get-rsvp.php')
-    .then(r => r.json())
-    .then(d => {
-      if (!d || !d.name) return;
 
-      const wrap = document.querySelector('.rsvp-list');
-      if (!wrap) return;
+  function loadLatestRsvp(){
+    fetch('get-rsvp.php')
+      .then(r=>r.json())
+      .then(d=>{
+        if (!d || !d.name) return;
 
-      const div = document.createElement('div');
-      div.className = 'rsvp-item animate-in';
-      div.innerHTML = `
-        <b>${d.name}</b> — ${d.attend}
-        ${d.message ? `<div class="small-muted">${d.message}</div>` : ''}
-      `;
+        const wrap = document.querySelector('.rsvp-list');
+        if (!wrap) return;
 
-      wrap.prepend(div);
-    });
-}
+        const div = document.createElement('div');
+        div.className = 'rsvp-item animate-in';
+        div.innerHTML = `
+          <b>${d.name}</b> — ${d.attend}
+          ${d.message ? `<div class="small-muted">${d.message}</div>` : ''}
+        `;
+        wrap.prepend(div);
+      });
+  }
 
   /* ---------- PARAM ?kpd= ---------- */
-  const params = new URLSearchParams(window.location.search);
-  const kpdVal = params.get('kpd');
-  if (kpdVal){
-    const kpd = $('#kpdName');
-    if (kpd) kpd.textContent = kpdVal;
-  }
+  const params = new URLSearchParams(location.search);
+  params.get('kpd') && ($('#kpdName').textContent = params.get('kpd'));
 
   /* ---------- COUNTDOWN ---------- */
   document.querySelectorAll('.countdown').forEach(cd=>{
-    const raw = cd.dataset.date;
-    if (!raw) return;
+    const target = new Date(cd.dataset.date.replace(' ', 'T') + '+08:00').getTime();
+    const d = cd.querySelector('.cd-days');
+    const h = cd.querySelector('.cd-hours');
+    const m = cd.querySelector('.cd-minutes');
+    const s = cd.querySelector('.cd-seconds');
 
-    const targetTime = new Date(raw.replace(' ', 'T') + '+08:00').getTime();
-    const dEl = cd.querySelector('.cd-days');
-    const hEl = cd.querySelector('.cd-hours');
-    const mEl = cd.querySelector('.cd-minutes');
-    const sEl = cd.querySelector('.cd-seconds');
-
-    function tick(){
-      let diff = targetTime - Date.now();
+    const tick = ()=>{
+      let diff = target - Date.now();
       if (diff <= 0){
-        dEl.textContent = hEl.textContent =
-        mEl.textContent = sEl.textContent = '00';
+        d.textContent = h.textContent = m.textContent = s.textContent = '00';
         return;
       }
-      dEl.textContent = Math.floor(diff / 86400000);
-      hEl.textContent = String(Math.floor(diff / 3600000 % 24)).padStart(2,'0');
-      mEl.textContent = String(Math.floor(diff / 60000 % 60)).padStart(2,'0');
-      sEl.textContent = String(Math.floor(diff / 1000 % 60)).padStart(2,'0');
-    }
-
+      d.textContent = Math.floor(diff / 86400000);
+      h.textContent = String(Math.floor(diff / 3600000 % 24)).padStart(2,'0');
+      m.textContent = String(Math.floor(diff / 60000 % 60)).padStart(2,'0');
+      s.textContent = String(Math.floor(diff / 1000 % 60)).padStart(2,'0');
+    };
     tick();
     setInterval(tick, 1000);
+  });
+
+  /* ---------- COPY NOMOR REKENING (FINAL AMAN) ---------- */
+  document.querySelectorAll('.copy-rek').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const num = btn.closest('.rek-wrap')?.querySelector('.rek-number')?.dataset.rek;
+      if (!num) return;
+
+      const ta = document.createElement('textarea');
+      ta.value = num;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+
+      const old = btn.textContent;
+      btn.textContent = 'Tersalin';
+      btn.classList.add('copied');
+      setTimeout(()=>{
+        btn.textContent = old;
+        btn.classList.remove('copied');
+      }, 1200);
+    });
   });
 
 });

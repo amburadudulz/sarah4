@@ -602,3 +602,29 @@ iframe#gmap_canvas {
     transform: translateY(0);
   }
 }
+.rek-wrap {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.rek-number {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.copy-rek {
+  padding: 6px 14px;
+  font-size: 13px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+}
+
+.copy-rek.copied {
+  background: #4caf50;
+}
