@@ -19,6 +19,13 @@ if (file_exists($rsvpFile)) {
  */
 $rsvps = array_slice(array_reverse($rsvps), 0, 10);
 ?>
+<?php
+$namaTamu = 'Tamu Undangan';
+
+if (!empty($_GET['to'])) {
+  $namaTamu = htmlspecialchars($_GET['to'], ENT_QUOTES, 'UTF-8');
+}
+?>
 <!DOCTYPE html>
 
 
@@ -28,7 +35,7 @@ $rsvps = array_slice(array_reverse($rsvps), 0, 10);
 <link rel="icon" type="image/x-icon" href="/index_files/wedding-ring.png">
 <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Undangan Pernikahan | Maisaroh & Aditya</title>
+  <title>Undangan Pernikahan | Sarah & Aditya</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -45,12 +52,12 @@ $rsvps = array_slice(array_reverse($rsvps), 0, 10);
   </div>
   <div class="cover-content">
     <p class="small-muted">Undangan Pernikahan</p>
-    <h2 class="title">Maisaroh & Aditya</h2>
+    <h2 class="title">Sarah & Aditya</h2>
     <p class="small-muted">
       Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i
       untuk menghadiri acara pernikahan kami.
     </p>
-    <p>Kepada Yth:<br><strong id="kpdName">Tamu Undangan</strong></p>
+    <p>Kepada Yth:<br><strong id="kpdName"><?= $namaTamu ?></strong></p>
     <button class="open-btn" id="openInvite">Buka Undangan</button>
   </div>
 </div>
@@ -78,7 +85,7 @@ $rsvps = array_slice(array_reverse($rsvps), 0, 10);
     </div>
     <div class="inner">
       <small class="small-muted">The Wedding Of</small>
-      <h1>Maisaroh & Aditya</h1>
+      <h1>Sarah & Aditya</h1>
       <p class="small-muted">Minggu, 11 Januari 2026</p>
 
       <!-- COUNTDOWN -->
